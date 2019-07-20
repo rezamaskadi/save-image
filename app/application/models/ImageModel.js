@@ -22,7 +22,7 @@ module.exports = function(args) {
       },
 
       image_src: {
-        type: dt.STRING(255),
+        type: dt.TEXT,
         allowNull: false
       }
     },

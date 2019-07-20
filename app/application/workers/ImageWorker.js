@@ -8,15 +8,18 @@ module.exports = function(args) {
 
   var ImageWorker = {
     newData: function(attributes, cb) {
-      ImageModel.create(attributes).then(
-        function(result) {
-          cb(null, result);
-        },
-        function(reason) {
-          logger.error(reason.message);
-          cb({ code: 500, message: reason.message });
-        }
-      );
+      ImageModel.findOne(attributes).then(result => {
+        if (result) return;
+        ImageModel.create(attributes).then(
+          function(result) {
+            cb(null, result);
+          },
+          function(reason) {
+            logger.error(reason.message);
+            cb({ code: 500, message: reason.message });
+          }
+        );
+      });
     }
   };
 

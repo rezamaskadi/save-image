@@ -11,16 +11,19 @@ module.exports = function(args) {
       ImageModel.findOne({
         where: { hashtag: attributes.hashtag, image_src: attributes.image_src }
       }).then(result => {
-        if (result) cb({ code: 500, message: "image existing" });
-        ImageModel.create(attributes).then(
-          function(result) {
-            cb(null, result);
-          },
-          function(reason) {
-            logger.error(reason.message);
-            cb({ code: 500, message: reason.message });
-          }
-        );
+        if (result) {
+          cb({ code: 500, message: "image existing" });
+        } else {
+          ImageModel.create(attributes).then(
+            function(result) {
+              cb(null, result);
+            },
+            function(reason) {
+              logger.error(reason.message);
+              cb({ code: 500, message: reason.message });
+            }
+          );
+        }
       });
     }
   };

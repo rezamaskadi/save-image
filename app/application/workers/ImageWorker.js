@@ -8,8 +8,10 @@ module.exports = function(args) {
 
   var ImageWorker = {
     newData: function(attributes, cb) {
-      ImageModel.findOne(attributes).then(result => {
-        if (result) return;
+      ImageModel.findOne({
+        where: { hashtag: attributes.hashtag, image_src: attributes.image_src }
+      }).then(result => {
+        if (result) cb({ code: 500, message: "image existing" });
         ImageModel.create(attributes).then(
           function(result) {
             cb(null, result);
